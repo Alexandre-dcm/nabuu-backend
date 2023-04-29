@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  Int @id @default(autoincrement())
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  email               String
+  hashPassword        String
+
+  firstName           String?
+  lastName            String?
+  documentations      Documentation[]
+  role                String?
+}
+
+model Documentation {
+  id                  Int @id @default(autoincrement())
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  name                String
+  slug                String?
+  description         String?
+  status              Int @default(0)
+  htmlContent         String? @db.Text
+  author              User? @relation(fields: [authorId], references: [id])
+  authorId            Int?
+  keywords            KeywordsOnDocumentations[]
+}
+
+model Keyword {
+  id                  Int @id @default(autoincrement())
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  name                String
+  documentations      KeywordsOnDocumentations[]
+}
+
+model KeywordsOnDocumentations {
+  Documentation       Documentation @relation(fields: [documentationId], references: [id])
+  documentationId     Int 
+  keyword             Keyword @relation(fields: [keywordId], references: [id])
+  keywordId           Int
+
+  @@id([keywordId, documentationId])
+}
