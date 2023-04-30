@@ -15,7 +15,7 @@ model User {
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
-  email               String
+  email               String @unique
   hashPassword        String
 
   firstName           String?
@@ -30,7 +30,7 @@ model Documentation {
   updatedAt           DateTime @updatedAt
 
   name                String
-  slug                String?
+  slug                String? @unique
   description         String?
   status              Int @default(0)
   htmlContent         String? @db.Text
@@ -44,7 +44,7 @@ model Keyword {
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
-  name                String
+  name                String @unique
   documentations      KeywordsOnDocumentations[]
 }
 
