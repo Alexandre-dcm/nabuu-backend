@@ -10,13 +10,14 @@ export class DocumentationService {
         private prisma: PrismaService
         ) {}
 
-    findOne(id: number) {
-        const doc = this.prisma.documentation.findUnique({
+    async findOne(slug: string) {
+        const doc = await this.prisma.documentation.findUnique({
             where: {
-                id: id
+                slug: slug
             }
         });
 
+        
         if (!doc) {
             throw new NotFoundException;
         }
@@ -24,7 +25,13 @@ export class DocumentationService {
         return doc;
     }
 
-    async newDoc(dto: DocumentationDto) {
+    findAll() {
+        const docs = this.prisma.documentation.findMany();
+
+        return docs;
+    }
+
+    async new(dto: DocumentationDto) {
         try {
             const doc = await this.prisma.documentation.create({
                 data: {
@@ -37,6 +44,40 @@ export class DocumentationService {
             return doc;
         } catch (e) {
             throw e;
+        }
+    }
+
+    async edit(dto: DocumentationDto, id: number) {
+        // We can only edit HTMLcontent, description and name for now.        
+        try {
+            const doc = await this.prisma.documentation.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    name: dto.name,
+                    htmlContent: dto.htmlContent,
+                    description: dto.description
+                }
+            });
+
+            return doc;
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    async deleteOne(id: number) {
+        try {
+            const result = await this.prisma.documentation.delete({
+                where: {
+                    id: id
+                }
+            });
+
+            return result;
+        } catch (e) {
+            throw new NotFoundException;
         }
     }
 }

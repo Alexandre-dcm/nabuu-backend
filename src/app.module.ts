@@ -5,6 +5,8 @@ import { DocumentationModule } from './documentation/documentation.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { DocumentationController } from './documentation/documentation.controller';
+import { HomeController } from './home/home.controller';
+import { HomeModule } from './home/home.module';
 
 @Module({
   imports: [
@@ -15,9 +17,9 @@ import { DocumentationController } from './documentation/documentation.controlle
     UserModule, 
     DocumentationModule, 
     PrismaModule,
-    DocumentationModule
+    HomeModule
   ],
-  controllers: [DocumentationController] 
+  controllers: [DocumentationController, HomeController] 
 })
 export class AppModule {
 
