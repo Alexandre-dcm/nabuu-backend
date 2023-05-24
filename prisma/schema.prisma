@@ -32,7 +32,7 @@ model Documentation {
   name                String
   slug                String? @unique
   description         String?
-  status              Int @default(0)
+  status              Int @default(1)
   htmlContent         String? @db.Text
   author              User? @relation(fields: [authorId], references: [id])
   authorId            Int?
