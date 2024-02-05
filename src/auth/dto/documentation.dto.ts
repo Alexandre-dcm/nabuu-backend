@@ -15,5 +15,5 @@ export class DocumentationDto {
     keywords: string;
 
     @IsString()
-    status: string
+    status: Number
 }
